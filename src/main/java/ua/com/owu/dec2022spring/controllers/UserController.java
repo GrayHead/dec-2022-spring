@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ua.com.owu.dec2022spring.dao.UserDAO;
@@ -37,10 +38,8 @@ public class UserController {
 
 
     @GetMapping("/{id}")
-    public User findUserById(@PathVariable("id") int userId) {
-        Optional<User> byId = userDAO.findById(userId);
-        User user = byId.get();
-        return user;
+    public ResponseEntity<User> findUserById(@PathVariable("id") int userId) {
+        return new ResponseEntity<>(userDAO.findById(userId).get(), HttpStatusCode.valueOf(200));
     }
 
 
