@@ -1,7 +1,6 @@
 package ua.com.owu.dec2022spring.controllers;
 
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -11,7 +10,6 @@ import ua.com.owu.dec2022spring.dao.UserDAO;
 import ua.com.owu.dec2022spring.models.User;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @AllArgsConstructor
