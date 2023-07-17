@@ -1,4 +1,4 @@
-package ua.com.owu.dec2022spring.services;
+package ua.com.owu.dec2022spring.services.user;
 
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpHeaders;

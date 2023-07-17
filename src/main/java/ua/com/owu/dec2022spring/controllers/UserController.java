@@ -1,21 +1,14 @@
 package ua.com.owu.dec2022spring.controllers;
 
-import com.fasterxml.jackson.annotation.JsonView;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ua.com.owu.dec2022spring.dao.UserDAO;
 import ua.com.owu.dec2022spring.models.User;
 import ua.com.owu.dec2022spring.models.dto.UserDTO;
-import ua.com.owu.dec2022spring.models.views.Views;
-import ua.com.owu.dec2022spring.services.UserService;
+import ua.com.owu.dec2022spring.services.user.UserService;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 //@AllArgsConstructor

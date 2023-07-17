@@ -1,4 +1,4 @@
-package ua.com.owu.dec2022spring.services;
+package ua.com.owu.dec2022spring.services.user;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
