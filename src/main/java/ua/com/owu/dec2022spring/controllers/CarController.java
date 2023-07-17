@@ -20,13 +20,14 @@ public class CarController {
     private CarService carService;
 
     @GetMapping()
+    @JsonView(Views.Level3.class)
     public ResponseEntity<List<Car>> getAllCars() {
         return carService.getAllCars();
     }
 
     //    get /cars/{id}
     @GetMapping("/{id}")
-    @JsonView(value = Views.Level1)
+    @JsonView(value = Views.Level1.class)
     public ResponseEntity<Car> getById(@PathVariable("id") int id) {
         return carService.getById(id);
     }
@@ -47,12 +48,14 @@ public class CarController {
 
 
     @GetMapping("/power/{value}")
+    @JsonView(Views.Level2.class)
     public ResponseEntity<List<Car>> getAllCarsByPower(@PathVariable int value) {
         return carService.getAllCarsByPower(value);
     }
 
     //    get cars/producer/{value} (знайти всі по виробнику)
     @GetMapping("/producer/{value}")
+    @JsonView(Views.Level2.class)
     public ResponseEntity<List<Car>> getCarsByProducer(@PathVariable String value) {
         return carService.getCarsByProducer(value);
     }
@@ -60,6 +63,4 @@ public class CarController {
 
 }
 
-//        Level1 - id model producer power (для endpoint /cars/{id})
-//        Level2 - model producer power ( для endpoint /cars/power, /cars/producer)
-//        Level2 - model producer (для endpoint /cars)
+
