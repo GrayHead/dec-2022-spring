@@ -43,5 +43,10 @@ public class UserServiceImpl2 implements UserService {
         return new ResponseEntity<>(collect, httpHeaders, HttpStatus.ACCEPTED);
     }
 
+    @Override
+    public void save(User user) {
+        userDAO.save(user);
+    }
+
 
 }

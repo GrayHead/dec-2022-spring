@@ -27,7 +27,14 @@ public class User {
     @JsonView({Views.Level1.class, Views.NoLevel.class})
     private String name;
 
+    private String avatar;
+
     public User(String name) {
         this.name = name;
+    }
+
+    public User(String name, String avatar) {
+        this.name = name;
+        this.avatar = avatar;
     }
 }

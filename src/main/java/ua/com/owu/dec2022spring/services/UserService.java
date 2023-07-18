@@ -17,5 +17,7 @@ public interface UserService {
 
     ResponseEntity<List<UserDTO>> getAllUsers();
 
+    void save(User user);
+
 
 }
