@@ -1,4 +1,4 @@
-package ua.com.owu.dec2022spring.services;
+package ua.com.owu.dec2022spring.services.user;
 
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import ua.com.owu.dec2022spring.dao.UserDAO;
 import ua.com.owu.dec2022spring.models.User;
 import ua.com.owu.dec2022spring.models.dto.UserDTO;
+import ua.com.owu.dec2022spring.services.mail.MailService;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 public class UserServiceImpl1 implements UserService {
 
     private UserDAO userDAO;
+    private MailService mailService;
 
     public void saveUser(UserDTO userDTO) {
         String name = userDTO.getUsername();
@@ -50,5 +52,6 @@ public class UserServiceImpl1 implements UserService {
     @Override
     public void save(User user) {
         userDAO.save(user);
+        mailService.sendEmailToUser(user);
     }
 }

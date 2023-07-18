@@ -1,6 +1,5 @@
 package ua.com.owu.dec2022spring.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -28,13 +27,12 @@ public class User {
     private String name;
 
     private String avatar;
+    private String email;
+    private boolean isActivated = false;
 
     public User(String name) {
         this.name = name;
     }
 
-    public User(String name, String avatar) {
-        this.name = name;
-        this.avatar = avatar;
-    }
+
 }

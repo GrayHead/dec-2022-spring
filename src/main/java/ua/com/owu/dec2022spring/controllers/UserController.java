@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ua.com.owu.dec2022spring.models.User;
 import ua.com.owu.dec2022spring.models.dto.UserDTO;
-import ua.com.owu.dec2022spring.services.UserService;
+import ua.com.owu.dec2022spring.services.user.UserService;
 
 import java.io.File;
 import java.util.List;
@@ -80,7 +80,21 @@ public class UserController {
         File transferDestinationFile = new File(path);
         avatar.transferTo(transferDestinationFile);
         userService.save(user);
+    }
 
+
+    @GetMapping("/activate/{id}")
+    public void activateUser(@PathVariable int id) {
+        ResponseEntity<User> userById = userService.getUserById(id);
+        User user = userById.getBody();
+        user.setActivated(true);
+        userService.save(user);
+
+    }
+
+    @PostMapping("/saveWithEmail")
+    public void saveWithEmail (@RequestBody User user) {
+        userService.save(user);
 
     }
 }
