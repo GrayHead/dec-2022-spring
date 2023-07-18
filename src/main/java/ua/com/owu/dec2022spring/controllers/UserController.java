@@ -70,16 +70,21 @@ public class UserController {
 
     @SneakyThrows
     @PostMapping("/savewithavatar")
-    public void saveWithAvatar(@RequestParam("avatar") MultipartFile avatar, @RequestParam("name") String name) {
+    public void saveWithAvatar(@RequestParam("avatar") MultipartFile avatar,
+                               @RequestParam("name") String name,
+                               @RequestParam String email) {
         User user = new User();
         user.setName(name);
+        user.setEmail(email);
         String originalFilename = avatar.getOriginalFilename(); // homer.jpg
         user.setAvatar(originalFilename); // {name:kokos,avatar:homer.jpg}
+
+//        System.out.println(avatar.getResource().getFile().getPath());
 
         String path = System.getProperty("user.home") + File.separator + "qqq" + File.separator + originalFilename;
         File transferDestinationFile = new File(path);
         avatar.transferTo(transferDestinationFile);
-        userService.save(user);
+        userService.save(user, transferDestinationFile);
     }
 
 
@@ -93,7 +98,7 @@ public class UserController {
     }
 
     @PostMapping("/saveWithEmail")
-    public void saveWithEmail (@RequestBody User user) {
+    public void saveWithEmail(@RequestBody User user) {
         userService.save(user);
 
     }

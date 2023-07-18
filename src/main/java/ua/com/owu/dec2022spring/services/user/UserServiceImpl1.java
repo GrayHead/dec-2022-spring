@@ -6,11 +6,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import ua.com.owu.dec2022spring.dao.UserDAO;
 import ua.com.owu.dec2022spring.models.User;
 import ua.com.owu.dec2022spring.models.dto.UserDTO;
 import ua.com.owu.dec2022spring.services.mail.MailService;
 
+import java.io.File;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -54,4 +56,12 @@ public class UserServiceImpl1 implements UserService {
         userDAO.save(user);
         mailService.sendEmailToUser(user);
     }
+
+    @Override
+    public void save(User user, File file) {
+        userDAO.save(user);
+        mailService.sendEmailToUser(user,file);
+    }
+
+
 }
