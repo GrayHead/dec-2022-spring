@@ -1,11 +1,13 @@
 package ua.com.owu.dec2022spring.filters;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,6 +16,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import ua.com.owu.dec2022spring.dao.AppUserDAO;
+import ua.com.owu.dec2022spring.models.ResponseError;
 import ua.com.owu.dec2022spring.services.JwtService;
 
 import java.io.IOException;
@@ -24,6 +28,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private JwtService jwtService;
     private UserDetailsService userDetailsService;
+    private AppUserDAO appUserDAO;
 
 
     @Override
@@ -48,7 +53,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     .getAuthentication() == null) {
                 UserDetails userDetails = userDetailsService.loadUserByUsername(userEmail);
 
-                if (jwtService.isTokenValid(jwt, userDetails)) {
+                if (jwtService.isTokenValid(jwt, userDetails)
+                        &&
+                        !jwt.equals(appUserDAO
+                                .findAppUserByEmail(userEmail)
+                                .getRefreshToken())
+                ) {
                     UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                             userDetails,
                             null,
@@ -70,7 +80,23 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         } catch (UsernameNotFoundException e) {
             throw new RuntimeException(e);
         } catch (ExpiredJwtException e) {
-            response.setHeader("XXX","dead");
+            response.setHeader("TokenError", "token dead");
+            response.resetBuffer();
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            response.setHeader(HttpHeaders.CONTENT_TYPE, "application/json");
+            ResponseError responseError = ResponseError
+                    .builder()
+                    .error("token is dead")
+                    .code(403)
+                    .build();
+
+            response
+                    .getOutputStream()
+                    .write(new ObjectMapper().writeValueAsBytes(responseError));
+
+            return;
+
+
         }
 
 

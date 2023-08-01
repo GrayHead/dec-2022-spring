@@ -29,11 +29,15 @@ public class AuthenticationService {
                 .role(Role.USER)
                 .build();
         String token = jwtService.generateToken(appUser);
+        String refreshToken = jwtService.generateRefreshToken(appUser);
+        appUser.setRefreshToken(refreshToken);
+
         appUserDAO.save(appUser);
 
         return AuthenticationResponse
                 .builder()
                 .token(token)
+                .refreshToken(refreshToken)
                 .build();
     }
 
@@ -47,10 +51,40 @@ public class AuthenticationService {
         );
         AppUser appUser = appUserDAO.findAppUserByEmail(authenticationRequest.getEmail());
         String token = jwtService.generateToken(appUser);
+        String refreshToken = jwtService.generateRefreshToken(appUser);
+        appUser.setRefreshToken(refreshToken);
+        appUserDAO.save(appUser);
 
-        return AuthenticationResponse.builder()
+        return AuthenticationResponse
+                .builder()
                 .token(token)
+                .refreshToken(refreshToken)
                 .build();
 
+    }
+
+    public AuthenticationResponse refresh(RequestRefresh requestRefresh) {
+        String token = requestRefresh.getRefreshToken();
+        String username = jwtService.extractUsername(token);
+        AppUser appUser = appUserDAO.findAppUserByEmail(username);
+        String newAccessToken = null;
+        String newRefreshToken = null;
+
+        if (appUser
+                .getRefreshToken()
+                .equals(token)) {
+
+            newAccessToken = jwtService.generateToken(appUser);
+            newRefreshToken = jwtService.generateRefreshToken(appUser);
+            appUser.setRefreshToken(newRefreshToken);
+            appUserDAO.save(appUser);
+
+        }
+
+        return AuthenticationResponse
+                .builder()
+                .token(newAccessToken)
+                .refreshToken(newRefreshToken)
+                .build();
     }
 }

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ua.com.owu.dec2022spring.models.AuthenticationRequest;
 import ua.com.owu.dec2022spring.models.AuthenticationResponse;
 import ua.com.owu.dec2022spring.models.RegisterRequest;
+import ua.com.owu.dec2022spring.models.RequestRefresh;
 import ua.com.owu.dec2022spring.services.AuthenticationService;
 
 @RestController
@@ -25,7 +26,13 @@ public class AuthenticationController {
     }
 
     @PostMapping("/authenticate")
-    public ResponseEntity<AuthenticationResponse>  authenticate(@RequestBody AuthenticationRequest authenticationRequest) {
-            return ResponseEntity.ok(authenticationService.authenticate(authenticationRequest));
+    public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest authenticationRequest) {
+        return ResponseEntity.ok(authenticationService.authenticate(authenticationRequest));
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<AuthenticationResponse> refresh(@RequestBody RequestRefresh requestRefresh) {
+
+        return ResponseEntity.ok(authenticationService.refresh(requestRefresh));
     }
 }
